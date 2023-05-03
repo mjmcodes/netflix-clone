@@ -1,4 +1,4 @@
-import axios, { AxiosResponse } from "axios";
+import axios from "axios";
 import queryString from "query-string";
 
 type Category = "upcoming" | "top_rated" | "popular" | "now_playing" | "latest";
@@ -52,7 +52,7 @@ const axiosClient = axios.create({
    },
 });
 
-const genres = {
+export const genres = {
    Action: 28,
    Adventure: 12,
    Animation: 16,
@@ -74,9 +74,6 @@ const genres = {
    Western: 37,
 };
 
-export const PosterLink = `https://image.tmdb.org/t/p/w500`;
-export const BackdropLink = `https://image.tmdb.org/t/p/original`;
-
 const getRequest = async (queryString: string) => {
    try {
       const { data } = await axiosClient(queryString);
@@ -92,4 +89,5 @@ export const MovieDBRequest = {
    fetchNetflixOriginals: () => getRequest("/discover/tv?with_networkds=213"),
    fetchMovieByGenre: (genre: keyof typeof genres) =>
       getRequest(`/discover/movie?with_genres=${genres[genre]}`),
+   fetchPopularShows: () => getRequest("/tv/popular"),
 };

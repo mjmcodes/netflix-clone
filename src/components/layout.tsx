@@ -1,19 +1,20 @@
-import Head from "next/head";
 import React from "react";
-import Seo from "../Seo";
-import { Navbar } from "./Navbar";
+import NavBar from "./Navbar";
+import Seo from "./seo";
 
 type Props = {
    pageTitle?: string;
    children: React.ReactNode;
 };
 
-export const BrowseLayout = ({ children, pageTitle }: Props) => {
+const Layout = ({ children, pageTitle }: Props) => {
    return (
       <>
-         <Navbar />
          <Seo title={pageTitle} />
+         <NavBar />
          <main className="pb-12">{children}</main>
       </>
    );
 };
+
+export default Layout;

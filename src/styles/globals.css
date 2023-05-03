@@ -4,19 +4,10 @@
 
 @layer base {
    body {
-      @apply antialiased text-white bg-black;
-   }
-}
-
-@layer components {
-   .container {
-      width: 100%;
-      max-width: 1400px;
-      padding: 0 theme(spacing.12);
-      margin: 0 auto;
+      @apply bg-black text-white antialiased overflow-x-hidden;
    }
 }
 
 .swiper-button-disabled {
-   opacity: 0;
+   @apply opacity-0;
 }

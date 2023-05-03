@@ -1,4 +1,3 @@
-import classNames from "classnames";
 import React from "react";
 
 type Props = {
@@ -8,7 +7,7 @@ type Props = {
    [x: string]: any;
 };
 
-export const TextField = ({
+const TextField = ({
    textLabel,
    handleChange,
    value,
@@ -22,24 +21,25 @@ export const TextField = ({
    }
 
    return (
-      <div className="relative">
+      <div className="relative bg-[#333] overflow-hidden rounded">
          <label
-            className={classNames(
-               "absolute z-10 text-gray-500 pointer-events-none top-3 left-4 transition-all",
-               { "-translate-y-1 text-xs": focused || value !== "" }
-            )}
+            className={`text-gray-400 pointer-events-none absolute left-4 top-[15px] transition-all ${
+               focused || value !== "" ? "text-sm -translate-y-[12px]" : ""
+            }`}
             htmlFor={inputProps.name}
          >
             {textLabel}
          </label>
          <input
+            className="pt-6 pb-1 w-full outline-none px-4 text-white bg-transparent"
             onFocus={toggleFocus}
             onBlur={toggleFocus}
             value={value}
             onChange={(e) => handleChange(e.target.value)}
-            className="w-full h-full px-4 pt-6 pb-2 font-semibold text-black rounded outline-none"
             {...inputProps}
          />
       </div>
    );
 };
+
+export default TextField;

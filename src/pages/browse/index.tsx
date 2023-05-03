@@ -1,59 +1,50 @@
 import React from "react";
-import {
-   BrowseLayout,
-   FeaturedBanner,
-   CardsCarousel,
-} from "@/components/layout";
 import { useEffect } from "react";
 
-import { Movie, MovieDBRequest } from "@/utils/constants/movieDb.constants";
+import {
+   Movie,
+   MovieDBRequest,
+   TvShow,
+} from "@/utils/constants/movieDb.constants";
+import PrivateRotue from "src/components/privateRoute";
+import Layout from "src/components/layout";
+import FeaturedHero from "@/components/FeaturedHero";
+import Carousel from "@/components/Carousel";
 
-export default function Browse() {
+const Browse = () => {
    const [featured, setFeatured] = React.useState<Movie | undefined>(undefined);
-   const [originals, setOriginals] = React.useState<Movie[]>([]);
+   const [tvShows, setTvShows] = React.useState<TvShow[]>([]);
    const [popular, setPopular] = React.useState<Movie[]>([]);
 
    useEffect(() => {
       (async () => {
          const response = await Promise.all([
             MovieDBRequest.fetchMovies("now_playing"),
-            MovieDBRequest.fetchNetflixOriginals(),
+            MovieDBRequest.fetchPopularShows(),
          ]);
 
-         setFeatured(
-            response[0].results[
-               Math.floor(Math.random() * response[0].results.length - 1)
-            ]
-         );
+         const ranIndex =
+            Math.floor(Math.random() * response[0].results.length - 1) + 1;
+
+         setFeatured(response[0].results[ranIndex]);
          setPopular(response[0].results);
-         setOriginals(response[1].results);
+         setTvShows(response[1].results);
       })();
    }, []);
 
    return (
-      <BrowseLayout>
-         <FeaturedBanner
+      <Layout>
+         <FeaturedHero
             title={featured?.title}
             description={featured?.overview}
             bgImageUrl={featured?.backdrop_path}
          />
 
-         <CardsCarousel
-            title="Netflix Originals"
-            isPoster
-            data={originals.map((item) => ({
-               posterPath: item.poster_path,
-               id: item.id,
-            }))}
-         />
+         <Carousel title="Popular Movies" data={popular} />
 
-         <CardsCarousel
-            title="Popular Movies"
-            data={popular.map((item) => ({
-               posterPath: item.backdrop_path,
-               id: item.id,
-            }))}
-         />
-      </BrowseLayout>
+         <Carousel title="Popular Tv Shows" data={tvShows} />
+      </Layout>
    );
-}
+};
+
+export default PrivateRotue(Browse);

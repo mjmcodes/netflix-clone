@@ -11,6 +11,7 @@ const Seo = ({ title }: Props) => {
    return (
       <Head>
          <title>{title ? `${title} - Netflix` : defaultTitle}</title>
+         <link rel="shortcut icon" href="/images/favicon.ico"></link>
       </Head>
    );
 };

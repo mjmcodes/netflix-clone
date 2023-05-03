@@ -12,7 +12,7 @@ const initialValues = {
    password: "",
 };
 
-export default function SignIn() {
+export default function LoginPage() {
    const [form, setForm] = React.useState(initialValues);
    const [errMsg, setErrMsg] = React.useState<string | undefined>(undefined);
    const [loading, setLoading] = React.useState(false);
@@ -24,15 +24,14 @@ export default function SignIn() {
       }
    }, [router.isReady]);
 
-   const handleUserLogin = async () => {
+   const handleUserSignUp = async () => {
       if (!form.email || !form.password) {
          setErrMsg("Please enter all fields");
          return;
       }
-
       try {
          setLoading(true);
-         await authService.login(form.email, form.password);
+         await authService.register(form.email, form.password);
          router.push("/browse");
       } catch (error: any) {
          setErrMsg(error.message);
@@ -41,10 +40,18 @@ export default function SignIn() {
    };
 
    return (
-      <AuthLayout>
-         <div className="max-w-md p-16 mx-auto space-y-3 rounded bg-black/70">
+      <AuthLayout title="Sign Up">
+         <div className="max-w-md p-16 bg-black/70 rounded mx-auto space-y-3">
+            <h1 className="text-7xl font-semibold"></h1>
             {errMsg && <div>{errMsg}</div>}
-            <h1 className="text-3xl font-semibold !mb-6">Sign In</h1>
+
+            <h1 className="text-2xl font-semibold">
+               Create a password to star your membership
+            </h1>
+            <div className="!mb-8">
+               <p>Just a few more steps and you're done!</p>
+               <p>We hate paperwork, too.</p>
+            </div>
 
             <TextField
                textLabel="Email address"
@@ -53,7 +60,7 @@ export default function SignIn() {
                handleChange={(val) => setForm({ ...form, email: val })}
             />
             <TextField
-               textLabel="Password"
+               textLabel="Add a password"
                name="password"
                type="password"
                value={form.password}
@@ -61,23 +68,17 @@ export default function SignIn() {
             />
 
             <Button
-               onClick={handleUserLogin}
-               text="Sign In"
+               text="Create account"
                classes="!mt-12"
+               onClick={handleUserSignUp}
                loading={loading}
             />
 
             <div className="!mt-12 text-white/60">
-               <p>
-                  New to Netflix?{" "}
-                  <Link className="font-semibold text-white" href="/">
-                     Sign up now.
-                  </Link>
-               </p>
-               <p className="mt-4 text-sm">
-                  This page is protected by Google reCAPTCHA to ensure you are
-                  not a bot.
-               </p>
+               Already have an account?{" "}
+               <Link className="text-white font-semibold" href="/login">
+                  Sign in
+               </Link>
             </div>
          </div>
       </AuthLayout>
